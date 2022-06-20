@@ -1,11 +1,7 @@
 import fetchData from './fetchData';
 
-const getDetails = async (
-  sources: string[],
-  name: string,
-  dataType: [] | Record<string, unknown>
-) => {
-  const urls = JSON.parse(localStorage.getItem(name) || `${dataType}`);
+const getDetails = async (sources: string[], name: string, dataType = '{}') => {
+  const urls = JSON.parse(localStorage.getItem(name) || dataType);
   const detailList = [];
   for (const source of sources) {
     if (!urls[source]) {

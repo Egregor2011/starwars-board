@@ -1,7 +1,8 @@
 import { ChangeEvent } from 'react';
 
-export interface HomeWorld {
+export interface Details {
   name: string;
+  title: string;
 }
 
 export interface SWCharacter {
@@ -14,7 +15,7 @@ export interface SWCharacter {
   hair_color: string;
   height: string;
   homeworld: string;
-  planet?: HomeWorld;
+  planet?: Details;
   mass: string;
   name: string;
   skin_color: string;
@@ -22,6 +23,8 @@ export interface SWCharacter {
   starships: string[];
   url: string;
   vehicles: string[];
+  ships: Details[];
+  movies: Details[];
 }
 
 export type SearchQuery = (event: ChangeEvent<HTMLInputElement>) => void;

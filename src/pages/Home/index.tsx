@@ -1,9 +1,8 @@
 import Pagination from '../../Components/Pagination';
-import PersonCard from '../../Components/PersonCard';
+import PersonList from '../../Components/PersonList';
 import StateWrapper from '../../Components/StateWrapper';
 import useGetCharacters from '../../hooks/useGetCharacters';
 import usePersonSearch from '../../hooks/usePersonSearch';
-import { SWCharacter } from './types';
 
 const Home = () => {
   const {
@@ -21,37 +20,39 @@ const Home = () => {
     setSearchQuery,
     loading: searchLoading,
     error: searchError,
+    getSearchPage,
   } = usePersonSearch();
 
+  const getPreviousPage = searchResults
+    ? getSearchPage(searchPages?.previous ?? '')
+    : handlePreviousPage;
+
+  const getNextPage = searchResults
+    ? getSearchPage(searchPages?.next ?? '')
+    : handleNextPage;
+
   return (
-    <>
-      <h1>Home</h1>
+    <div className="flex flex-col justify-center items-center">
+      <h1 className="text-5xl font-bold my-5">List of Characters</h1>
       <input
-        className="mt-5 mb-5"
+        className="my-2 w-1/2 px-5 py-2 text-2xl"
         onChange={(e) => setSearchQuery(e.target.value)}
+        placeholder="Search for a character"
       />
       <StateWrapper
         loading={searchLoading || peopleLoading}
         error={searchError || peopleError}
       >
-        {(searchResults || people).map((person: SWCharacter) => (
-          <PersonCard
-            key={person.name}
-            name={person.name}
-            gender={person.gender}
-            planet={person?.planet?.name as string}
-            url={person.url}
-          />
-        ))}
+        <PersonList people={searchResults || people} />
         <Pagination
-          current={peoplePages.current}
-          next={searchPages.next || peoplePages.next}
-          previous={searchPages.next || peoplePages.next}
-          handleNext={handleNextPage}
-          handlePrevious={handlePreviousPage}
+          current={!searchResults ? peoplePages.current : 0}
+          next={searchResults ? searchPages.next : peoplePages.next}
+          previous={searchResults ? searchPages.previous : peoplePages.previous}
+          handleNext={getNextPage}
+          handlePrevious={getPreviousPage}
         />
       </StateWrapper>
-    </>
+    </div>
   );
 };
 export default Home;

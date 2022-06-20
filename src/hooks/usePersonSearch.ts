@@ -1,30 +1,43 @@
 import { useEffect, useState } from 'react';
+import { SWCharacter } from './../pages/Home/types';
 import debounce from '../lib/debounce';
 import getFormattedResults from '../lib/getFormattedResults';
-import getPeopleUrl from '../lib/getPeopleUrl';
+import fetchData from '../lib/fetchData';
+
+interface SearchData {
+  results: SWCharacter[];
+  next: string | null;
+  previous: string | null;
+}
 
 const usePersonSearch = () => {
   const [query, setQuery] = useState<string>('');
-  const [searchData, setSearchData] = useState<any>(null);
-  const [error, setError] = useState<any>(null);
+  const [searchData, setSearchData] = useState<SearchData | null>(null);
+  const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const getSearchPage = (urlData: string) => () => {
+    setLoading(true);
+    fetchData(urlData)()
+      .then(async (data) => {
+        return {
+          ...data,
+          results: await getFormattedResults(data.results),
+        };
+      })
+      .then(setSearchData)
+      .catch(setError)
+      .finally(() => setLoading(false));
+  };
 
   useEffect(() => {
     if (query.length) {
-      setLoading(true);
-      getPeopleUrl(`?search=${query}`)
-        .then(async (data) => {
-          return {
-            ...data,
-            results: await getFormattedResults(data.results),
-          };
-        })
-        .then(setSearchData)
-        .catch(setError)
-        .finally(() => setLoading(false));
+      getSearchPage(
+        `${import.meta.env.VITE_API_ENDPOINT}people?search=${query}`
+      )();
     }
 
-    if (!query.length && searchData) {
+    if (!query.length) {
       setSearchData(null);
     }
   }, [query]);
@@ -42,6 +55,7 @@ const usePersonSearch = () => {
     setSearchQuery,
     loading,
     error,
+    getSearchPage,
   };
 };
 

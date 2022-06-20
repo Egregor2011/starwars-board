@@ -9,10 +9,6 @@ interface Page {
   next: string | null;
 }
 
-interface Error {
-  message: string;
-}
-
 interface UseGetCharacters {
   people: SWCharacter[];
   pages: Page;
