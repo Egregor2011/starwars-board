@@ -1,9 +1,9 @@
-import { HomeWorld, SWCharacter } from '../pages/Home/types';
+import { Details, SWCharacter } from '../pages/Home/types';
 import fetchData from './fetchData';
 
 const getFormattedResults = async (persons: SWCharacter[]) => {
   const urls = JSON.parse(localStorage.getItem('planetUrls') || '{}') as {
-    [key: string]: HomeWorld;
+    [key: string]: Details;
   };
   const formattedPeople = [] as SWCharacter[];
   for (const person of persons) {

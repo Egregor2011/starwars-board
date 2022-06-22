@@ -48,7 +48,7 @@ module.exports = {
     'react/jsx-uses-react': 0,
     'import/no-unresolved': 'off',
     'import/no-useless-path-segments': 'off',
-    'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
+    'import/no-extraneous-dependencies': ['warn', { devDependencies: true }],
     'no-restricted-syntax': [
       'error',
       'FunctionExpression',

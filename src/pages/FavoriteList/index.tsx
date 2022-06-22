@@ -1,26 +1,15 @@
-import { useEffect, useState } from 'react';
 import FavoritePerson from '../../Components/FavoritePerson';
 import StateWrapper from '../../Components/StateWrapper';
-import getFavoritePeople from '../../lib/getFavoritePeople';
-import { SWCharacter } from '../Home/types';
+import useFavoriteList from '../../hooks/useFavoriteList';
 
 const FavoriteList = () => {
-  const [favoritePeople, setFavoritePeople] = useState<SWCharacter[]>([]);
-  const [error, setError] = useState<Error | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const favoritePeopleList = JSON.parse(
-    localStorage.getItem('favoriteList') || '[]'
-  );
-
-  useEffect(() => {
-    if (favoritePeopleList.length > 0) {
-      setLoading(true);
-      getFavoritePeople(favoritePeopleList)
-        .then((people) => setFavoritePeople(people))
-        .catch(setError)
-        .finally(() => setLoading(false));
-    }
-  }, [favoritePeopleList.length]);
+  const {
+    favoritePeople,
+    loading,
+    error,
+    favoritePeopleList,
+    setFavoritePeople,
+  } = useFavoriteList();
 
   return (
     <div className="flex justify-center items-center flex-col">
