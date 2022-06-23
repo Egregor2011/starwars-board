@@ -33,7 +33,7 @@ const usePersonSearch = () => {
   useEffect(() => {
     if (query.length) {
       getSearchPage(
-        `${import.meta.env.VITE_API_ENDPOINT}people?search=${query}`
+        `${import.meta.env.VITE_API_ENDPOINT}/people?search=${query}`
       )();
     }
 

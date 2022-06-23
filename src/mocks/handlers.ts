@@ -33,8 +33,11 @@ const people = [
 ];
 
 const handlers = [
-  rest.get('https://swapi.co/api/people', (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(people));
+  rest.get('https://swapi.dev/api/people', (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json({ results: people }));
+  }),
+  rest.get('https://swapi.dev/api/people/1', (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json({ ...people[0] }));
   }),
 ];
 
